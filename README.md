@@ -1,13 +1,14 @@
 ## 网站性能优化项目
 
 ### 第一步
-需要 nodeJS 环境，安装请到[nodeJS](https://nodejs.org/zh-cn/)（推荐LTS版本）
+需要 nodeJS 环境，安装请到[nodeJS](https://nodejs.org/zh-cn/)（推荐LTS版本）。
  
 ### 第二步
-首先运行 npm install 安装项目依赖
+首先运行 npm install 安装项目依赖。
 
 ### 第三步
-然后运行 gulp serve 命令即可启动服务
+先运行 gulp 压缩文件，
+然后运行 gulp serve 命令启动服务即可查看网页。
 
 
 #### tips: 使用在[网站性能优化课程](https://cn.udacity.com/course/website-performance-optimization--ud884/)中学习的技术来优化关键渲染路径并使这个页面尽可能快的渲染。
