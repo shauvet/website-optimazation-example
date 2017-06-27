@@ -7,6 +7,9 @@ var merge = require('merge-stream');
 var uglify = require('gulp-uglify');
 var cleanCSS = require('gulp-clean-css');
 var browserSync = require('browser-sync').create();
+var jpegtran = require('imagemin-jpegtran');
+var pngquant = require('imagemin-pngquant');
+var clean = require('gulp-clean');
 
 var config = {
   baseDir: './',
@@ -23,10 +26,28 @@ gulp.task('serve', function () {
   });
 });
 
+gulp.task('clean', function () {
+  return gulp.src('dist/**/*.*', {read: false}).pipe(clean());
+});
+
 gulp.task('images', function () {
-  var pizza = gulp.src('views/images/*.*').pipe(imagemin({progressive: true})).pipe(gulp.dest('dist/images'));
-  var other = gulp.src('img/*.*').pipe(imagemin({progressive: true})).pipe(gulp.dest('dist/images'));
-  return merge(pizza, other);
+  var pizzaJpg = gulp.src('views/images/*.jpg').pipe(imagemin({
+    use:[jpegtran()]
+  })).pipe(gulp.dest('dist/images'));
+  var pizzaPng = gulp.src('views/images/*.png').pipe(imagemin({
+    quality: '65-80',
+    speed: 4,
+    use:[pngquant()]
+  })).pipe(gulp.dest('dist/images'));
+  var otherJpg = gulp.src('img/*.jpg').pipe(imagemin({
+    use:[jpegtran()]
+  })).pipe(gulp.dest('dist/images'));
+  var otherPng = gulp.src('img/*.png').pipe(imagemin({
+    quality: '65-80',
+    speed: 4,
+    use:[pngquant()]
+  })).pipe(gulp.dest('dist/images'));
+  return merge(pizzaJpg, pizzaPng, otherJpg, otherPng);
 });
 
 gulp.task('scripts', function () {
@@ -37,4 +58,4 @@ gulp.task('css', function () {
   gulp.src(['views/css/*.css', 'css/*.css']).pipe(cleanCSS({compatibility: 'ie8'})).pipe(gulp.dest('dist/css'));
 });
 
-gulp.task('default', ['images', 'scripts', 'css']);
+gulp.task('default', ['clean', 'images', 'scripts', 'css']);
